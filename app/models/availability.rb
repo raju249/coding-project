@@ -19,7 +19,32 @@ class Availability < ApplicationRecord
   end
 
   def self.find_available_slot(user, start_time, end_time)
-    user.availabilities.where("start_time <= ? AND end_time >= ?", end_time, start_time).first
+    user.availabilities.where("start_time < ? AND end_time > ?", end_time, start_time).first
+  end
+
+  def consume_duration(start_time, end_time)
+    if self.start_time < start_time && self.end_time > end_time
+      # case of booking in middle of the availability
+      remaining_start = self.dup
+      remaining_start.end_time = start_time
+      remaining_start.save!
+
+      remaining_end = self.dup
+      remaining_end.start_time = end_time
+      remaining_end.save!
+
+      self.destroy
+    elsif self.start_time >= start_time && self.end_time <= end_time
+      # The entire availability is consumed, no need to split
+      self.destroy
+    else
+      # Partial overlap, adjust the start_time or end_time accordingly
+      if self.start_time < start_time
+        self.update!(end_time: start_time)
+      else
+        self.update!(start_time: end_time)
+      end
+    end
   end
 
   def end_time_after_start_time

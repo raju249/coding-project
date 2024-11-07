@@ -3,13 +3,11 @@
 one:
   start_time: 2024-11-07 15:40:09
   end_time: 2024-11-07 15:40:09
-  recurring_pattern: MyText
   user: one
   timezone: one
 
 two:
   start_time: 2024-11-07 15:40:09
   end_time: 2024-11-07 15:40:09
-  recurring_pattern: MyText
   user: two
   timezone: two

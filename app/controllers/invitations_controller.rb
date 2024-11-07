@@ -1,5 +1,7 @@
 class InvitationsController < ApplicationController
-  before_action :set_invitation, only: [:show, :update, :destroy]
+  before_action :set_invitation, only: [ :show, :update, :destroy ]
+  before_action :set_event, only: [ :create ]
+  before_action :set_user, only: [ :create ]
 
   def index
     @invitations = Invitation.all
@@ -11,12 +13,23 @@ class InvitationsController < ApplicationController
   end
 
   def create
-    @invitation = Invitation.new(invitation_params)
+    @availability = Availability.find_available_slot(@user, @event.start_time, @event.end_time)
 
-    if @invitation.save
-      render json: @invitation, status: :created
+    if @availability
+      ActiveRecord::Base.transaction do
+        # Create invitation
+        @invitation = Invitation.new(invitation_params)
+
+        if @invitation.save
+          # Consume the time slot from availability
+          @availability.consume_duration(@event.start_time, @event.end_time)
+          render json: @invitation, status: :created
+        else
+          render json: @invitation.errors, status: :unprocessable_entity
+        end
+      end
     else
-      render json: @invitation.errors, status: :unprocessable_entity
+      render json: { error: "User is not available for this time slot" }, status: :unprocessable_entity
     end
   end
 
@@ -37,6 +50,14 @@ class InvitationsController < ApplicationController
 
   def set_invitation
     @invitation = Invitation.find(params[:id])
+  end
+
+  def set_event
+    @event = Event.find(invitation_params[:event_id])
+  end
+
+  def set_user
+    @user = User.find(invitation_params[:user_id])
   end
 
   def invitation_params

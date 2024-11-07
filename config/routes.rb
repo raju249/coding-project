@@ -11,14 +11,15 @@ Rails.application.routes.draw do
 
   resources :availabilities, except: [ :new, :edit ]
 
+  post "schedule_meeting/:user_id", to: "events#schedule_meeting", as: "schedule_meeting"
+
   resources :events do
     member do
       post "invite"
-      post "schedule_meeting/:user_id", to: "events#schedule_meeting", as: "schedule_meeting"
     end
   end
 
-  resources :invitations, only: [ :update ]
+  resources :invitations
 
   resources :notifications, only: [ :index, :update ]
 end

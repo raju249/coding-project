@@ -1,5 +1,5 @@
 class EventsController < ApplicationController
-  before_action :set_event, only: [:show, :update, :destroy, :invite, :schedule_meeting]
+  before_action :set_event, only: [:show, :update, :destroy, :invite]
 
   def index
     @events = Event.all
@@ -54,7 +54,7 @@ class EventsController < ApplicationController
       @event = Event.new(
         title: params[:title],
         description: params[:description],
-        start_time: @availability.start_time,
+        start_time: start_time,
         duration: params[:duration],
         timezone: @availability.timezone,
         organizer_name: params[:organizer_name],
@@ -64,6 +64,8 @@ class EventsController < ApplicationController
       if @event.save
         @invitation = @event.invitations.build(user: @user, status: :accepted)
         @invitation.save!
+
+        @availability.consume_duration(@event.start_time, @event.end_time)
 
         render json: @event, status: :created
       else

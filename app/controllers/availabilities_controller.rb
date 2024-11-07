@@ -40,6 +40,6 @@ class AvailabilitiesController < ApplicationController
   end
 
   def availability_params
-    params.require(:availability).permit(:start_time, :end_time, :recurring_pattern, :user_id, :timezone_id)
+    params.require(:availability).permit(:start_time, :end_time, :user_id, :timezone_id)
   end
 end

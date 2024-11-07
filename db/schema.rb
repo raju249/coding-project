@@ -10,11 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_11_07_122034) do
+ActiveRecord::Schema[7.2].define(version: 2024_11_07_164325) do
   create_table "availabilities", force: :cascade do |t|
     t.datetime "start_time"
     t.datetime "end_time"
-    t.text "recurring_pattern"
     t.integer "user_id", null: false
     t.integer "timezone_id", null: false
     t.datetime "created_at", null: false
