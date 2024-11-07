@@ -19,7 +19,20 @@ class Availability < ApplicationRecord
   end
 
   def self.find_available_slot(user, start_time, end_time)
-    user.availabilities.where("start_time < ? AND end_time > ?", end_time, start_time).first
+    # First find a potential availability slot
+    availability = user.availabilities
+    .where("start_time <= ? AND end_time >= ?", end_time, start_time)
+    .first
+
+    return nil unless availability
+
+    # Check if there are any existing events that would overlap
+    has_overlapping_events = Event.joins(:invitations)
+    .where(invitations: { user_id: user.id })
+    .where("start_time < ? AND end_time > ?", end_time, start_time)
+    .exists?
+
+    has_overlapping_events ? nil : availability
   end
 
   def consume_duration(start_time, end_time)
