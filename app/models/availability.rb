@@ -60,6 +60,33 @@ class Availability < ApplicationRecord
     end
   end
 
+  def self.restore_slot(user, start_time, end_time)
+    return if user.availabilities.exists?(start_time: start_time, end_time: end_time)
+    # Find adjacent or overlapping availabilities
+    adjacent_slots = user.availabilities
+      .where("(end_time = ? OR start_time = ?)", start_time, end_time)
+      .order(:start_time)
+
+    if adjacent_slots.empty?
+      # Create new availability if no adjacent slots
+      user.availabilities.create!(
+        start_time: start_time,
+        end_time: end_time,
+        timezone: user.timezone
+      )
+    else
+      adjacent_slots.each do |slot|
+        if slot.end_time == start_time
+          # Extend the existing slot's end time
+          slot.update!(end_time: end_time)
+        elsif slot.start_time == end_time
+          # Extend the existing slot's start time
+          slot.update!(start_time: start_time)
+        end
+      end
+    end
+  end
+
   def end_time_after_start_time
     errors.add(:end_time, "must be after start time") if end_time <= start_time
   end
