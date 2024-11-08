@@ -14,6 +14,18 @@
    bundle install
    ```
 
+   4a. Set up credentials:
+   ```bash
+   # Generate a new credentials file and master key
+   rails credentials:edit
+   ```
+   This will create:
+   - config/credentials.yml.enc
+   - config/master.key
+
+   Note: Keep master.key secure and never commit it to the repository
+   ```
+
 5. Create and migrate the database:
    ```
    rails db:create
