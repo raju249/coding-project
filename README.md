@@ -151,6 +151,8 @@ Follow steps mentioned in [official render rails docs](https://docs.render.com/d
 - Dependent relationships use cascading deletes.
 - Using SQLite for simplicity (can be upgraded to PostgreSQL/MySQL).
 
+</details>
+
 ---
 
 # Harbor Take Home Project
