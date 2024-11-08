@@ -30,6 +30,7 @@
    ```
    rails db:create
    rails db:migrate
+   rails db:seed # To seed timezone entries
    ```
 
 6. Start the Rails server:
@@ -86,7 +87,11 @@ The application should now be running at `http://localhost:3000`.
 - GET /notifications - List all notifications
 - PUT/PATCH /notifications/:id - Update a notification
 
---
+# Deploy the project on [Render](https://render.com).
+
+Follow steps mentioned in [official render rails docs](https://docs.render.com/deploy-rails)
+
+---
 
 # Harbor Take Home Project
 
