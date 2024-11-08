@@ -50,8 +50,14 @@ class UsersController < ApplicationController
   end
 
   def find_overlap
-    @other_user = User.find(params[:other_user_id])
-    @overlapping_availabilities = Availability.find_overlapping_availabilities(@user&.id, @other_user&.id)
+    @other_user = User.find_by(id: params[:other_user_id])
+
+    if @user.nil? || @other_user.nil?
+      render json: { error: "User not found" }, status: :not_found
+      return
+    end
+
+    @overlapping_availabilities = Availability.find_overlapping_availabilities(@user.id, @other_user.id)
     render json: @overlapping_availabilities
   end
 
@@ -59,7 +65,7 @@ class UsersController < ApplicationController
 
   def set_user
     user_id = params[:id] || params[:user_id]
-    @user = User.find(user_id)
+    @user = User.find_by(id: user_id)
   end
 
   def user_params
