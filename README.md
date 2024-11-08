@@ -96,6 +96,114 @@ The application should now be running at `http://localhost:3000`.
 Follow steps mentioned in [official render rails docs](https://docs.render.com/deploy-rails)
 
 <details>
+<summary>Sample API for POST Requests/Responses</summary>
+
+## Create a User
+POST `/users`
+
+Request:
+```json
+{
+  "user": {
+    "name": "Rajendra Kadam",
+    "email": "rajendrakadam249@gmail.com",
+    "timezone_id": 18
+  }
+}
+```
+
+Response:
+```json
+{
+	"id": 1,
+	"name": "Raj Kadam",
+	"email": "rajendrakadam249@gmail.com",
+	"created_at": "2024-11-08T12:07:55.644Z",
+	"updated_at": "2024-11-08T12:07:55.644Z",
+	"timezone_id": 18
+}
+```
+
+## Set Availability
+POST `/users/1/set_availability`
+
+Request:
+```json
+{
+  "availability": {
+    "start_time": "2024-11-08T09:00:00Z",
+    "end_time": "2024-11-08T17:00:00Z",
+    "timezone_id": 18
+  }
+}
+```
+
+Response:
+```json
+{
+  "id": 1,
+  "user_id": 1,
+  "start_time": "2024-11-08T09:00:00Z",
+  "end_time": "2024-11-08T17:00:00Z",
+  "timezone_id": 18,
+  "created_at": "2024-11-08T12:07:55.644Z",
+  "updated_at": "2024-11-08T12:07:55.644Z",
+}
+```
+
+## Schedule a Meeting
+POST `/schedule_meeting/1`
+
+Request:
+```json
+{
+  "title": "Project Review",
+  "description": "Weekly project status review",
+  "start_time": "2024-11-08T10:00:00Z",
+  "duration": 60,
+  "organizer_name": "Raj Kadam",
+  "organizer_email": "rajkadam@gmail.com"
+}
+```
+
+Response:
+```json
+{
+  "id": 1,
+  "title": "Project Review",
+  "description": "Weekly project status review",
+  "start_time": "2024-11-08T10:00:00Z",
+  "end_time": "2024-11-08T11:00:00Z",
+  "duration": 60,
+  "timezone_id": 18,
+  "organizer_name": "Raj Kadam",
+  "organizer_email": "rajkadam@gmail.com",
+  "created_at": "2024-11-08T12:07:55.644Z",
+  "updated_at": "2024-11-08T12:07:55.644Z",
+}
+```
+
+## Find Overlapping Availabilities
+GET `/users/1/find_overlap/2`
+
+Response:
+```json
+[
+  {
+    "start_time": "2024-11-08T10:00:00Z",
+    "end_time": "2024-11-08T15:00:00Z"
+  }
+]
+```
+
+## Delete Event
+DELETE `/events/1`
+
+Response: HTTP 204 No Content
+
+</details>
+
+<details>
 <summary>Project Assumptions & Design Decisions</summary>
 
 ## Time-Related Assumptions
