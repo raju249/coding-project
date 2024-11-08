@@ -95,6 +95,62 @@ The application should now be running at `http://localhost:3000`.
 
 Follow steps mentioned in [official render rails docs](https://docs.render.com/deploy-rails)
 
+<details>
+<summary>Project Assumptions & Design Decisions</summary>
+
+## Time-Related Assumptions
+- All times are stored in UTC for consistency across timezones.
+- Duration is stored in minutes for simplicity and human readability.
+
+## Availability Management
+- Users can have multiple non-overlapping availability slots.
+- When an event is scheduled, it intelligently splits or consumes the availability slot.
+- Adjacent availability slots are automatically adjusted when restored for cleanup.
+- Availability can be split into multiple slots when partially consumed, preserving the remaining time slots.
+
+## Event Handling
+- Events have a fixed duration that doesn't change once set.
+- Each event requires basic organizer info (name and email) for contact purposes.
+- Events can have multiple attendees through invitations.
+- Double-booking prevention: events cannot overlap for the same user.
+- End time is automatically calculated based on duration and start time.
+
+## Invitation System
+- Simple invitation state machine: pending → accepted/declined.
+- Accepting an invitation automatically consumes the user's availability.
+- Availability is automatically restored when invitation/event is deleted.
+- One user can't have multiple invitations to the same event (prevents duplicates).
+- No emails are sent for invitations yet.
+
+## User Management
+- Users require name and unique email for identification.
+- Timezone association is mandatory for proper time handling but it is not used anywhere even if supplied in interest of time.
+- Users can manage multiple availabilities and invitations.
+- All user-related operations maintain data integrity through transactions.
+
+## Timezone Handling
+- Timezones are predefined entities with name and offset.
+- All time-based entities (availability, event, user) must specify timezone.
+- Timezone names must be unique for consistency.
+
+## Data Integrity
+- All availability modifications are wrapped in transactions.
+- Event deletion triggers automatic availability restoration.
+- Cascading deletes handle cleanup of dependent relationships.
+
+## API Design Choices
+- JSON responses for modern API compatibility.
+- RESTful conventions for predictable endpoints.
+- No authentication (MVP approach).
+- No rate limiting (can be added later).
+- Consistent error responses with appropriate HTTP status codes.
+
+## Database Design
+- Foreign key constraints ensure referential integrity.
+- Email uniqueness enforced at database level.
+- Dependent relationships use cascading deletes.
+- Using SQLite for simplicity (can be upgraded to PostgreSQL/MySQL).
+
 ---
 
 # Harbor Take Home Project
