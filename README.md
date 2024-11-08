@@ -19,12 +19,16 @@
    # Generate a new credentials file and master key
    rails credentials:edit
    ```
+
    This will create:
+
+   ```
    - config/credentials.yml.enc
    - config/master.key
+   ```
 
    Note: Keep master.key secure and never commit it to the repository
-   ```
+
 
 5. Create and migrate the database:
    ```
@@ -44,48 +48,48 @@ The application should now be running at `http://localhost:3000`.
 
 ## Users
 
-- GET /users - List all users
-- GET /users/:id - Get user details
-- POST /users - Create a new user
-- PUT/PATCH /users/:id - Update a user
-- DELETE /users/:id - Delete a user
-- GET /users/:id/availabilities - Get user's availabilities
-- POST /users/:id/set_availability - Set availability for a user
-- GET /users/:id/find_overlap/:other_user_id - Find overlapping availabilities between two users
+- GET `/users` - List all users
+- GET `/users/:id` - Get user details
+- POST `/users` - Create a new user
+- PUT/PATCH `/users/:id` - Update a user
+- DELETE `/users/:id` - Delete a user
+- GET `/users/:id/availabilities` - Get user's availabilities
+- POST `/users/:id/set_availability` - Set availability for a user
+- GET `/users/:id/find_overlap/:other_user_id` - Find overlapping availabilities between two users
 
 ## Timezones
 
-- GET /timezones - List all timezones
+- GET `/timezones` - List all timezones
 
 ## Availabilities
-- GET /availabilities - List all availabilities
-- GET /availabilities/:id - Get availability details
-- POST /availabilities - Create a new availability
-- PUT/PATCH /availabilities/:id - Update an availability
-- DELETE /availabilities/:id - Delete an availability
+- GET `/availabilities` - List all availabilities
+- GET `/availabilities/:id` - Get availability details
+- POST `/availabilities` - Create a new availability
+- PUT/PATCH `/availabilities/:id` - Update an availability
+- DELETE `/availabilities/:id` - Delete an availability
 
 ## Events
 
-- GET /events - List all events
-- GET /events/:id - Get event details
-- POST /events - Create a new event
-- PUT/PATCH /events/:id - Update an event
-- DELETE /events/:id - Delete an event
-- POST /events/:id/invite - Invite a user to an event
-- POST /schedule_meeting/:user_id - Schedule a meeting with a user
+- GET `/events` - List all events
+- GET `/events/:id` - Get event details
+- POST `/events` - Create a new event
+- PUT/PATCH `/events/:id` - Update an event
+- DELETE `/events/:id` - Delete an event
+- POST `/events/:id/invite` - Invite a user to an event
+- POST `/schedule_meeting/:user_id` - Schedule a meeting with a user
 
 ## Invitations
 
-- GET /invitations - List all invitations
-- GET /invitations/:id - Get invitation details
-- POST /invitations - Create a new invitation
-- PUT/PATCH /invitations/:id - Update an invitation
-- DELETE /invitations/:id - Delete an invitation
+- GET `/invitations` - List all invitations
+- GET `/invitations/:id` - Get invitation details
+- POST `/invitations` - Create a new invitation
+- PUT/PATCH `/invitations/:id` - Update an invitation
+- DELETE `/invitations/:id` - Delete an invitation
 
 ## Notifications
 
-- GET /notifications - List all notifications
-- PUT/PATCH /notifications/:id - Update a notification
+- GET `/notifications` - List all notifications
+- PUT/PATCH `/notifications/:id` - Update a notification
 
 # Deploy the project on [Render](https://render.com).
 
